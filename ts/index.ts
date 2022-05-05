@@ -11,17 +11,21 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT? process.env.PORT: 8000;
 
-// noop and actions middleware 
+/**
+ * noop/actions middleware 
+ */
 app.use(Noop.Middleware());
 
 app.post('/1', (req: Request, res: Response) => {
   
+  /**
+   * get context and actions for this request
+   */
+
   let ctx = Context.get(req)
   let actions = Action.FromCtx(ctx)
-
-  console.log("Request has noop ? ", Noop.ContainsNoop(ctx))
-  console.log("Request action events ? ", actions?.Get())
- 
+  console.log("Request is noop ? ", Noop.ContainsNoop(ctx))
+  console.log("Request action events -> ", actions?.Get())
   let event = new Event()
   event.name = 'at server url 1'
   event.meta = {'at':'server url 1'}
@@ -31,7 +35,6 @@ app.post('/1', (req: Request, res: Response) => {
     return
   }
   res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.stringify(actions?.Get())});
-  // res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.parse(JSON.stringify(actions?.Get()))});
 });
 
 app.post('/2', (req: Request, res: Response) => {
@@ -46,15 +49,14 @@ app.post('/2', (req: Request, res: Response) => {
   event.meta = {'at':'server url 2'}
   actions?.Add(event)
 
-  console.log("Request has noop ? ", Noop.ContainsNoop(ctx))
-  console.log("Request action events ? ", actions?.Get())
+  console.log("Request is noop ? ", Noop.ContainsNoop(ctx))
+  console.log("Request action events -> ", actions?.Get())
  
   if (actions === undefined || actions === null){
     res.send({'noop?':Noop.ContainsNoop(ctx)});
     return
   }
   res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.stringify(actions?.Get())});
-  // res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.parse(JSON.stringify(actions?.Get()))});
 });
 
 app.listen(port, () => {

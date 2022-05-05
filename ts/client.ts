@@ -3,7 +3,7 @@ import { json } from 'stream/consumers';
 import { Actions,Event } from './src/actions';
 import Noop from './src/noop';
 
-const someHeaders = {
+const existingHeaders = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -11,6 +11,9 @@ const someHeaders = {
 
 let someData = {userId: "01234"};
 
+/**
+ * Add action events
+ */
 let event1 = new Event()
 event1.name = 'event 1'
 event1.meta = {'from':'client 1'}
@@ -19,7 +22,10 @@ let actions = new Actions(event1)
 fetch('http://localhost:8000/1', {
     method: 'POST',
     body: JSON.stringify(someData),
-    headers: Noop.MakeHeader(someHeaders, actions),
+    /**
+     * update existing headers with noop/action headers
+     */
+    headers: Noop.MakeHeader(existingHeaders, actions),
 })
 .then((result: { json: () => any; }) => result.json())
 .then((jsonformat: any)=>{
@@ -33,7 +39,7 @@ fetch('http://localhost:8000/1', {
 
   fetch('http://localhost:8000/2', {
     method: 'POST',
-    headers: Noop.MakeHeader(someHeaders, newActions),
+    headers: Noop.MakeHeader(existingHeaders, newActions),
   })
   .then((result: { json: () => any; }) => result.json())
   .then((jsonformat: any)=>{
