@@ -9,7 +9,7 @@ import { Event } from './src/actions'
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT? process.env.PORT: 8000;
+const port = process.env.PORT? process.env.PORT: 8082;
 
 /**
  * noop/actions middleware 

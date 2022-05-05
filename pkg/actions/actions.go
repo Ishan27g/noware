@@ -6,7 +6,7 @@ import (
 	"errors"
 )
 
-const actionKey string = "action_key"
+const actionKey string = "action-key"
 
 type Actions struct {
 	Events chan []interface{}

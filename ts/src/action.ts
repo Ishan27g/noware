@@ -1,6 +1,5 @@
 import { IncomingHttpHeaders } from 'http'
 import{ Headers } from 'node-fetch'
-import internal from 'stream'
 import { Actions, Event } from './actions'
 import Context from './context'
 
@@ -11,15 +10,14 @@ export class  Action {
     }
 
     static Header(from: Headers, action :Actions) : Headers{
-        let copy = from
         action.Get().forEach(e => {
-            from.append(Action.key(), "["+JSON.stringify(e)+"]")            
+            // todo : doesn't parse array as array
+            from.append(Action.key(), "["+JSON.stringify(e)+"]")
         })
-        from.set(Action.key(), copy.get(Action.key())!)
         return new Headers(from)!
     }
     static FromHeaders(from: IncomingHttpHeaders): Actions | null{
-        const actionsString : string = from[Action.key()] as string
+        const actionsString : string = from[Action.key()] as string // todo : doesn't parse array as array
         if (actionsString === undefined || actionsString === null){
             return null
         }

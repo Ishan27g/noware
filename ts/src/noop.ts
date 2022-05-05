@@ -16,6 +16,7 @@ export default class Noop {
             // irrespective, weakmap[key] would anyways be garbage collected at the end of scope for which the key was added
             if (ctx == null) {  // todo : remove null check
                 if (Noop.checkHeader(req.headers)) {
+                    console.log("has noop header")
                     let actions = Action.FromHeaders(req.headers)
                     if (actions != null){
                         ctx = Action.NewCtxWithActions(actions)

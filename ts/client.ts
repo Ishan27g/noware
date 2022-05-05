@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import { json } from 'stream/consumers';
 import { Actions,Event } from './src/actions';
 import Noop from './src/noop';
 
@@ -9,7 +8,7 @@ const existingHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type',
   }
 
-let someData = {userId: "01234"};
+let someData = {name: "anyone"};
 
 /**
  * Add action events
@@ -19,7 +18,7 @@ event1.name = 'event 1'
 event1.meta = {'from':'client 1'}
 let actions = new Actions(event1)
 
-fetch('http://localhost:8000/1', {
+fetch('http://localhost:8082/1', {
     method: 'POST',
     body: JSON.stringify(someData),
     /**
@@ -37,7 +36,7 @@ fetch('http://localhost:8000/1', {
   newEvent.meta = {'from':'client 2'}
   newActions.Add(newEvent)
 
-  fetch('http://localhost:8000/2', {
+  fetch('http://localhost:8082/2', {
     method: 'POST',
     headers: Noop.MakeHeader(existingHeaders, newActions),
   })

@@ -7,7 +7,7 @@ import (
 
 type keyType string
 
-const noopKey keyType = "noop_key"
+const noopKey keyType = "noop-key"
 
 func ContainsNoop(ctx context.Context) bool {
 	if ctx == nil {
