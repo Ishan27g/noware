@@ -2,8 +2,9 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import Noop from './src/noop';
 import Context from './src/context';
-import { Action, Actions, Event } from './src/actions';
-import { json } from 'stream/consumers';
+import { Action } from './src/action';
+import { Event } from './src/actions'
+
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ app.use(Noop.Middleware());
 app.post('/1', (req: Request, res: Response) => {
   
   let ctx = Context.get(req)
-  let actions = Action.FromHeaders(req.headers)
+  let actions = Action.FromCtx(ctx)
 
   console.log("Request has noop ? ", Noop.ContainsNoop(ctx))
   console.log("Request action events ? ", actions?.Get())
@@ -25,7 +26,10 @@ app.post('/1', (req: Request, res: Response) => {
   event.name = 'at server url 1'
   event.meta = {'at':'server url 1'}
   actions?.Add(event)
-  
+  if (actions === undefined || actions === null){
+    res.send({'noop?':Noop.ContainsNoop(ctx)});
+    return
+  }
   res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.stringify(actions?.Get())});
   // res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.parse(JSON.stringify(actions?.Get()))});
 });
@@ -33,8 +37,10 @@ app.post('/1', (req: Request, res: Response) => {
 app.post('/2', (req: Request, res: Response) => {
   
   let ctx = Context.get(req)
-  let actions = Action.FromHeaders(req.headers)
-
+  console.log(ctx)
+  
+  let actions = Action.FromCtx(ctx)
+  console.log("actions 2", actions?.Get())
   let event = new Event()
   event.name = 'at server url 2'
   event.meta = {'at':'server url 2'}
@@ -43,6 +49,10 @@ app.post('/2', (req: Request, res: Response) => {
   console.log("Request has noop ? ", Noop.ContainsNoop(ctx))
   console.log("Request action events ? ", actions?.Get())
  
+  if (actions === undefined || actions === null){
+    res.send({'noop?':Noop.ContainsNoop(ctx)});
+    return
+  }
   res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.stringify(actions?.Get())});
   // res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.parse(JSON.stringify(actions?.Get()))});
 });
