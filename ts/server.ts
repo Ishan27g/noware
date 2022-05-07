@@ -16,7 +16,7 @@ const port = process.env.PORT? process.env.PORT: 8082;
  */
 app.use(Noop.Middleware());
 
-app.post('/1', (req: Request, res: Response) => {
+app.post('/node/1', (req: Request, res: Response) => {
   
   /**
    * get context and actions for this request
@@ -25,29 +25,26 @@ app.post('/1', (req: Request, res: Response) => {
   let ctx = Context.get(req)
   let actions = Action.FromCtx(ctx)
   console.log("Request is noop ? ", Noop.ContainsNoop(ctx))
+ 
   console.log("Request action events -> ", actions?.Get())
-  let event = new Event()
-  event.name = 'at server url 1'
-  event.meta = {'at':'server url 1'}
-  actions?.Add(event)
+  let event1 : Event = {name: 'server 1', meta: {'at':'server url 1 at NODE'} }
+  actions?.Add(event1)
+
   if (actions === undefined || actions === null){
     res.send({'noop?':Noop.ContainsNoop(ctx)});
     return
   }
-  res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.stringify(actions?.Get())});
+  res.send(JSON.stringify(actions?.Get()));
 });
 
-app.post('/2', (req: Request, res: Response) => {
+app.post('/node/2', (req: Request, res: Response) => {
   
   let ctx = Context.get(req)
-  console.log(ctx)
   
   let actions = Action.FromCtx(ctx)
-  console.log("actions 2", actions?.Get())
-  let event = new Event()
-  event.name = 'at server url 2'
-  event.meta = {'at':'server url 2'}
-  actions?.Add(event)
+  let event1 : Event = {name: 'server 2', meta: {'at':'server url 2 at NODE'} }
+
+  actions?.Add(event1)
 
   console.log("Request is noop ? ", Noop.ContainsNoop(ctx))
   console.log("Request action events -> ", actions?.Get())
@@ -56,7 +53,7 @@ app.post('/2', (req: Request, res: Response) => {
     res.send({'noop?':Noop.ContainsNoop(ctx)});
     return
   }
-  res.send({'noop?':Noop.ContainsNoop(ctx), 'actions': JSON.stringify(actions?.Get())});
+  res.send(JSON.stringify(actions?.Get()));
 });
 
 app.listen(port, () => {

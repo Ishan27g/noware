@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/Ishan27g/noware/pkg/actions"
@@ -65,5 +66,5 @@ func httpReqExtractActions(req *http.Request) *http.Request {
 	if a == nil {
 		return req
 	}
-	return req.Clone(actions.NewCtx(req.Context(), a))
+	return req.Clone(actions.NewCtx(context.Background(), a))
 }

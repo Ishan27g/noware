@@ -1,5 +1,7 @@
+import e from 'express'
 import { IncomingHttpHeaders } from 'http'
 import{ Headers } from 'node-fetch'
+import { type } from 'os'
 import { Actions, Event } from './actions'
 import Context from './context'
 
@@ -11,25 +13,16 @@ export class  Action {
 
     static Header(from: Headers, action :Actions) : Headers{
         action.Get().forEach(e => {
-            // todo : doesn't parse array as array
-            from.append(Action.key(), "["+JSON.stringify(e)+"]")
+            from.append(Action.key(), JSON.stringify(e)) // {"name":"event 1","meta":{"from":"client 1"}}
         })
         return new Headers(from)!
     }
     static FromHeaders(from: IncomingHttpHeaders): Actions | null{
-        const actionsString : string = from[Action.key()] as string // todo : doesn't parse array as array
-        if (actionsString === undefined || actionsString === null){
+        const hasActions = from[Action.key()]
+        if (hasActions === undefined || hasActions == null){
             return null
         }
-        return Action.from(actionsString)
-    }
-    private static from(actionsString: string) {
-        let events: Event[] = []
-        actionsString.split(", [").forEach(s => {
-            s = s.replace("]", "")
-            s = s.replace("[", "")
-            events.push(JSON.parse(s.trim()))
-        })
+        const events : Event [] = JSON.parse(JSON.stringify(JSON.parse("[" + hasActions + "]")))
         return new Actions(...events)
     }
 

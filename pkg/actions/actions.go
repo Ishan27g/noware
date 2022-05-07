@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 )
 
 const actionKey string = "action-key"
@@ -74,21 +75,21 @@ func (a *Actions) Marshal() ([]byte, error) {
 	}
 	e := <-a.Events
 	defer func() { a.Events <- e }()
-	return json.Marshal(struct {
-		Events []interface{} `json:"Events"`
-	}{Events: e})
+	//return json.Marshal(struct {
+	//	Events []interface{} `json:"Events"`
+	//}{Events: e})
+	return json.Marshal(e)
 }
 func UnMarshal(by []byte) (Actions, error) {
 	a := New()
 	var events []Event
-	var b struct {
-		Events []interface{} `json:"Events"`
-	}
+	var b interface{}
 	err := json.Unmarshal(by, &b)
 	if err != nil {
+		fmt.Println(err.Error())
 		return *a, nil
 	}
-	j, _ := json.Marshal(b.Events)
+	j, _ := json.Marshal(b)
 	_ = json.Unmarshal(j, &events)
 	for _, event := range events {
 		a.AddEvent(event)
