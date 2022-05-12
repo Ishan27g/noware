@@ -30,6 +30,13 @@ app.post('/node/1', (req: Request, res: Response) => {
   let event1 : Event = {name: 'server 1', meta: {'at':'server url 1 at NODE'} }
   actions?.Add(event1)
 
+  // skip the actual operation if noop
+  if (!Noop.ContainsNoop(ctx)){
+    // log.Println("updating database")
+		// <-time.After(2 * time.Second)
+		// log.Println("updated database")
+  }
+
   if (actions === undefined || actions === null){
     res.send({'noop?':Noop.ContainsNoop(ctx)});
     return
@@ -49,6 +56,13 @@ app.post('/node/2', (req: Request, res: Response) => {
   console.log("Request is noop ? ", Noop.ContainsNoop(ctx))
   console.log("Request action events -> ", actions?.Get())
  
+    // skip the actual operation if noop
+    if (!Noop.ContainsNoop(ctx)){
+      // log.Println("updating database")
+      // <-time.After(2 * time.Second)
+      // log.Println("updated database")
+    }
+  
   if (actions === undefined || actions === null){
     res.send({'noop?':Noop.ContainsNoop(ctx)});
     return
