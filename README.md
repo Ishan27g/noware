@@ -1,6 +1,11 @@
 # noware
 no(op-middle)ware for Go &amp; Ts
 
+TODO
+- [ ] add code comments
+- [ ] detail an `example/`
+- [ ] move ts - `client/server` to example/
+
 [ideated-from-gopherCon](#GopherCon-talk)
 
 The `noop middleware`
@@ -36,7 +41,7 @@ that would normally be present in live and high traffic systems.
 ### GopherCon-talk
 All concepts about the async testing pattern are from this GopherCon talk https://docs.microsoft.com/en-us/events/gophercon-2021/rethinking-how-we-test-our-async-architecture.
 
-- ❌ It does not propogate the `context` over http requests, rather a url param is used to indicate `noop`
-- ❌ `Events` are not propogated with the context, which means the test suite is left with the responsibility of building up the action of events it gets back.
+- It does not propogate the `context` over http requests, rather a url param is used to indicate `noop`
+- `Events` (aka the `Memoir`) are not propogated with the context, which means the test suite is left with the responsibility of building up the action of events it gets back.
 
 Building from the concepts, `noware` propogates the same `context` over http-requests and allows injecting the `action-events` into this context (opentelemetry anyone?), This enables downstream services to extract the previous event and get the expected input, without the test suite having to manipulate anything.
