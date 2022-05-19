@@ -11,7 +11,6 @@ import (
 // injected is context has `actions`
 func HttpRequest(req *http.Request) *http.Request {
 	if ContainsNoop(req.Context()) {
-		// return httpReqInjectNoop(httpReqInjectActions(noop.addHeader(req)))
 		return actions.Inject(AddHeader(req))
 	}
 	return req

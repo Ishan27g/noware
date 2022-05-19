@@ -75,9 +75,6 @@ func (a *Actions) Marshal() ([]byte, error) {
 	}
 	e := <-a.Events
 	defer func() { a.Events <- e }()
-	//return json.Marshal(struct {
-	//	Events []interface{} `json:"Events"`
-	//}{Events: e})
 	return json.Marshal(e)
 }
 func UnMarshal(by []byte) (Actions, error) {

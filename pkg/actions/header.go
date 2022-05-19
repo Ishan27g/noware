@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 )
 
 func CheckHeader(req *http.Request) bool {
@@ -19,8 +18,10 @@ func Inject(req *http.Request) *http.Request {
 	if a = FromCtx(req.Context()); a == nil {
 		return req
 	}
-	actionJson, _ := a.Marshal()
-	req = addHeader(req, string(actionJson))
+	for _, event := range a.GetEvents() {
+		e, _ := json.Marshal(event)
+		req = addHeader(req, string(e))
+	}
 	return req
 }
 
@@ -34,9 +35,7 @@ func Extract(req *http.Request) *http.Request {
 }
 
 func addHeader(req *http.Request, val string) *http.Request {
-	val = strings.TrimPrefix(val, "[")
-	val = strings.TrimSuffix(val, "]")
-	req.Header.Set(actionKey, val)
+	req.Header.Add(actionKey, val)
 	return req
 }
 

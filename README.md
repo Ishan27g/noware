@@ -2,7 +2,7 @@
 no(op-middle)ware for Go &amp; Ts
 
 TODO
-- [ ] add code comments
+- [X] add code comments
 - [ ] detail an `example/`
 - [ ] move ts - `client/server` to example/
 

@@ -35,5 +35,5 @@ func Gin() gin.HandlerFunc {
 
 // adds noop ctx to request
 func httpReqInjectNoop(req *http.Request) *http.Request {
-	return req.Clone(noop.NewCtxWithNoop(req.Context(), true))
+	return req.Clone(noop.NewCtxWithNoop(req.Context()))
 }

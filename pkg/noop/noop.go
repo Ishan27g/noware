@@ -19,14 +19,14 @@ func ContainsNoop(ctx context.Context) bool {
 	return false
 }
 
-func NewCtxWithNoop(ctx context.Context, isNoop bool) context.Context {
+func NewCtxWithNoop(ctx context.Context) context.Context {
 	if ctx == nil {
 		ctx = context.Background()
 	}
 	if ContainsNoop(ctx) { // todo needed?
 		return ctx
 	}
-	return context.WithValue(ctx, noopKey, isNoop)
+	return context.WithValue(ctx, noopKey, true)
 }
 func AddHeader(req *http.Request) *http.Request {
 	req.Header.Add(string(noopKey), "true")

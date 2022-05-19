@@ -23,7 +23,6 @@ type Request struct {
 	Id   string `json:"data,omitempty"`
 	Name string `json:"name,omitempty"`
 }
-type Response Request
 
 func timeIt(from time.Time) {
 	log.Println("took", time.Since(from).String())
@@ -72,22 +71,14 @@ func addAction(ctx context.Context) context.Context {
 		Name: "one",
 		Meta: []int{1, 2, 3, 4},
 	})
-	//a.AddEvent(actions.Event{
-	//	Name: "one",
-	//	Meta: `{"a": "b"}`,
-	//})
-
 	ctx = actions.NewCtx(ctx, a)
 	return ctx
 }
 func main() {
 
-	ctx := noop.NewCtxWithNoop(context.Background(), true)
+	ctx := noop.NewCtxWithNoop(context.Background())
 	ctx = addAction(ctx)
 	requestWithNoopCtx(ctx, urlGolang, Request{Name: "someone"})
 	requestWithNoopCtx(ctx, urlNode, Request{Name: "someone"})
-
-	//requestWithNoopCtx(context.Background(), urlGolang, Request{Name: "someone"})
-	// requestWithNoopCtx(context.Background(), urlNode, Request{Name: "someone"})
 
 }

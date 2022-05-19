@@ -22,8 +22,7 @@ var noopCtx = func(ctx context.Context) context.Context {
 
 func TestNewCtxWithNoop(t *testing.T) {
 	type args struct {
-		ctx    context.Context
-		isNoop bool
+		ctx context.Context
 	}
 	tests := []struct {
 		name string
@@ -31,23 +30,20 @@ func TestNewCtxWithNoop(t *testing.T) {
 		want context.Context
 	}{
 		{name: "no context", args: struct {
-			ctx    context.Context
-			isNoop bool
-		}{ctx: nil, isNoop: true}, want: context.WithValue(context.Background(), noopKey, true)},
+			ctx context.Context
+		}{ctx: nil}, want: context.WithValue(context.Background(), noopKey, true)},
 		{name: "some context", args: struct {
-			ctx    context.Context
-			isNoop bool
-		}{ctx: context.WithValue(context.WithValue(context.Background(), "one", "1"), "two", "2"), isNoop: true},
+			ctx context.Context
+		}{ctx: context.WithValue(context.WithValue(context.Background(), "one", "1"), "two", "2")},
 			want: noopCtx(context.WithValue(context.WithValue(context.Background(), "one", "1"), "two", "2"))},
 		{name: "noop context", args: struct {
-			ctx    context.Context
-			isNoop bool
+			ctx context.Context
 		}{ctx: noopCtx(context.Background())},
 			want: noopCtx(context.Background())},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equalf(t, tt.want, NewCtxWithNoop(tt.args.ctx, tt.args.isNoop), "NewCtxWithNoop(%v, %v)", tt.args.ctx, tt.args.isNoop)
+			assert.Equalf(t, tt.want, NewCtxWithNoop(tt.args.ctx), "NewCtxWithNoop(%v, %v)", tt.args.ctx)
 		})
 	}
 }
