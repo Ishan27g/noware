@@ -3,7 +3,7 @@ no(op-middle)ware for Go &amp; Ts
 
 TODO
 - [X] add code comments
-- [ ] detail an `example/`
+- [X] detail an `example/`
 - [ ] move ts - `client/server` to example/
 
 [ideated-from-gopherCon](#GopherCon-talk)
@@ -17,26 +17,23 @@ or pass any url params in the request.
 
 This middleware has none to no impact for regular/user based requests, but can provide an enriched log of the services when triggered by the test suite.
 
-- Requests that do not contain the `noop` context are handled as normal. Everything is null, so it has minimal impact on performance or memory.
-- The requests that do contain the `noop` context, will be send from a test suite. The `noop context`
+- Requests that do not contain the `noop` context are handled as normal.
+- The requests that do contain the `noop` context, will be send from a test suite.
 
 With `noop` We can assume the criteria of success for the method as everything it would normally done up till the final file persistence operation, db writes or external calls (assuming the external services are available)
 
-A simple test suite can then send `noop` requests to these service's http wrappers, for which the receiving service would run the usual logic and return before the final external service calls.
-The data that it would have normally sent to the external service can be sent back to the test suite. In this way, the need to generate mock data for testing each service or to mock a downstream service
-is removed. The test suite can then trigger the next service with this data.
+A simple test suite can then send `noop` requests to these service's http wrappers, for which the receiving service would run the usual logic and return before the final external service calls. The data that it would have normally sent to the external service can be sent back to the test suite. In this way, the need to generate mock data for testing each service or to mock a downstream service is removed. The test suite can then trigger the next service with this data.
 
-The `noop middleware` can be specially useful in `async-systems`, where a message sent to the system may be delivered at a later time.
-An `async` system that is deployed and live can then be sent `noop` requests to get back an enriched log of the requests handling.
+> The `noop middleware` can be specially useful in `async-systems`, where a message sent to the system may be delivered at a later time. A quick/timely response from all deployed and live aysnc-service allows testing the services without incurring the queue delays or dropped messages that would normally be present in live and high traffic systems. 
 
-The `async` methods can be tested in a `sync` way by also running them as http handlers using the `noop middleware`,
+A deployed and live `async` system can be sent `noop` requests to get back an enriched log of the requests handling over the various stages as it would return just before pushing any data to the async message queues.
+
+The `async` methods can be tested in a `sync` way by running them as http handlers using the `noop middleware`,
 where triggering the http method is akin to the async method receiving a message from some async-queue.
 When triggered with a `noop` context, these services can operate as usual up till the moment they have to publish a message that ends up in some queue.
-Instead, they skip publishing the message and return back the message to the test suite.
+Instead, they skip publishing the message and return back the message to the test suite. 
 
-This timely response from a deployed and live aysnc-service allows testing the service without incurring the queue delays or dropped messages
-that would normally be present in live and high traffic systems.
-
+See [examples/async](https://github.com/Ishan27g/noware/tree/main/examples/async)
 
 ### GopherCon-talk
 All concepts about the async testing pattern are from this GopherCon talk https://docs.microsoft.com/en-us/events/gophercon-2021/rethinking-how-we-test-our-async-architecture.
