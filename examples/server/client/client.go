@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/Ishan27g/noware/pkg/actions"
-	"github.com/Ishan27g/noware/pkg/middleware"
 	"github.com/Ishan27g/noware/pkg/noop"
 )
 
@@ -39,7 +38,7 @@ func requestWithNoopCtx(ctx context.Context, url string, payload Request) bool {
 	}
 
 	// add noop ctx
-	r := middleware.HttpRequest(req)
+	r := noop.HttpRequest(req)
 
 	// fmt.Println("Sending - ", req.Header)
 	client := http.DefaultClient
