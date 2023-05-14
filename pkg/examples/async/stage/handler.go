@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Ishan27g/noware/examples/async/service"
-	"github.com/Ishan27g/noware/examples/async/types"
 	"github.com/Ishan27g/noware/pkg/actions"
+	"github.com/Ishan27g/noware/pkg/examples/async/service"
+	"github.com/Ishan27g/noware/pkg/examples/async/types"
 	"github.com/Ishan27g/noware/pkg/middleware"
 	"github.com/Ishan27g/noware/pkg/noop"
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,9 @@ type wrapper struct {
 	methods map[string]gin.HandlerFunc
 }
 
-/* Noop-Testing:
+/*
+	Noop-Testing:
+
 Wrap async method as its own http handler
 - extracts the noop & action from request's context
 - triggers underlying async method

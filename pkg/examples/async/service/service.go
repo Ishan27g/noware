@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	nats2 "github.com/Ishan27g/noware/examples/async/nats"
+	nats2 "github.com/Ishan27g/noware/pkg/examples/async/nats"
 	"github.com/nats-io/nats.go"
 )
 

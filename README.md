@@ -1,10 +1,6 @@
 # noware
 no(op-middle)ware for Go &amp; Ts
 
-TODO
-- [X] add code comments
-- [X] detail an `example/`
-- [ ] move ts - `client/server` to example/
 
 [ideated-from-gopherCon](#GopherCon-talk)
 
@@ -33,8 +29,26 @@ where triggering the http method is akin to the async method receiving a message
 When triggered with a `noop` context, these services can operate as usual up till the moment they have to publish a message that ends up in some queue.
 Instead, they skip publishing the message and return back the message to the test suite. 
 
-See [examples/async](https://github.com/Ishan27g/noware/tree/main/examples/async)
+`Golang` 
+- server [go/server](https://github.com/Ishan27g/noware/tree/main/pkg/examples/server/main.go)
+- client [go/server](https://github.com/Ishan27g/noware/tree/main/pkg/examples/server/client/client.go)
+- complex example with nats [go/async](https://github.com/Ishan27g/noware/tree/main/pkg/examples/async/pipeline.go) `go run pkg/examples/async/pipeline.go (expects nats to be running)`
 
+`Typescript`
+- server [ts/server.ts](https://github.com/Ishan27g/noware/tree/main/ts/server.ts)
+- client [ts/client.ts](https://github.com/Ishan27g/noware/tree/main/ts/client.ts)
+
+```shell
+# shell 1 (go server)
+> go run examples/server/main.go
+# shell 2 (node server)
+> cd ts
+> npm i && npm run build
+> node dist/server.js
+# shell 3 (client)
+> go run examples/server/client/client.go
+> node ts/dist/client.js
+```
 ### GopherCon-talk
 All concepts about the async testing pattern are from this GopherCon talk https://docs.microsoft.com/en-us/events/gophercon-2021/rethinking-how-we-test-our-async-architecture.
 

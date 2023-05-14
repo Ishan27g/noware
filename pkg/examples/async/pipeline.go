@@ -9,10 +9,10 @@ import (
 	"net/http"
 	"time"
 
-	nats2 "github.com/Ishan27g/noware/examples/async/nats"
-	"github.com/Ishan27g/noware/examples/async/stage"
-	"github.com/Ishan27g/noware/examples/async/types"
 	"github.com/Ishan27g/noware/pkg/actions"
+	nats2 "github.com/Ishan27g/noware/pkg/examples/async/nats"
+	"github.com/Ishan27g/noware/pkg/examples/async/stage"
+	"github.com/Ishan27g/noware/pkg/examples/async/types"
 	"github.com/Ishan27g/noware/pkg/noop"
 )
 
