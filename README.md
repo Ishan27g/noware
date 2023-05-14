@@ -31,7 +31,7 @@ Instead, they skip publishing the message and return back the message to the tes
 
 `Golang` 
 - server [go/server](https://github.com/Ishan27g/noware/tree/main/pkg/examples/server/main.go)
-- client [go/server](https://github.com/Ishan27g/noware/tree/main/pkg/examples/server/client/client.go)
+- client [go/client](https://github.com/Ishan27g/noware/tree/main/pkg/examples/server/client/client.go)
 - complex example with nats [go/async](https://github.com/Ishan27g/noware/tree/main/pkg/examples/async/pipeline.go) `go run pkg/examples/async/pipeline.go (expects nats to be running)`
 
 `Typescript`
@@ -40,13 +40,13 @@ Instead, they skip publishing the message and return back the message to the tes
 
 ```shell
 # shell 1 (go server)
-> go run examples/server/main.go
+> go run pkg/examples/server/main.go
 # shell 2 (node server)
 > cd ts
 > npm i && npm run build
 > node dist/server.js
 # shell 3 (client)
-> go run examples/server/client/client.go
+> go run pkg/examples/server/client/client.go
 > node ts/dist/client.js
 ```
 ### GopherCon-talk
